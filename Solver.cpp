@@ -1,9 +1,6 @@
 #include <math.h>
 #include <iostream>
 using namespace std;
-
-
-
   
 const int size = 1024;  
 float data[size][size] = { { 0 } };
@@ -37,11 +34,14 @@ float nAvg(int row, int col){
 
 float stability(){
   float result = -1;
-  for (int row = 0; row < size; row++){
-    for (int col = 0; col < size; col++){
+  for (int row = 1; row < size-1; row++){
+    for (int col = 1; col < size-1; col++){
       float tmp = fabs( nAvg(row,col) - data[row][col]);
       if(tmp > result) { // doesnt meet the tol, return
 	result = tmp;
+      } 
+      if (tmp > 0.1){
+	return tmp;
       }
     }
   }
@@ -63,7 +63,7 @@ void iterate(){
     }
   }
   copy();
-  toString();
+  //toString();
 }
 
 int main(){
@@ -71,16 +71,16 @@ int main(){
     
   init(50);
   float stabl = stability ();
-  cout << "Initial stability: " << stabl << "\n"; 
-  toString();
+  //cout << "Initial stability: " << stabl << "\n"; 
+  //toString();
   while(stabl >= 0.1){
-    cout << iterations <<"stability: " << stabl << "\n";
+    //cout << iterations <<"stability: " << stabl << "\n";
     iterate();
     stabl = stability();
     iterations++;
   }
 
-  toString();
+  //toString();
   
   cout << iterations << "\n";
   return 0;
